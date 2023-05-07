@@ -1,0 +1,57 @@
+#### proste skrypty, dzięki którym poznajemy bliżej dane w DataFrame, na którym pracujemy.
+
+# Spis skryptów:
+# impuls: O, niektóre komórki tej kolumny nie są słownikami! Sprawdźmy ile ich jest i co w nich siedzi.
+# 1. Odfiltrowanie komórek kolumny, które mają inny typ danych niż spodziewany (tutaj: słownik) - i zlicznie.
+# 2. Drukowanie bez powtórzeń, na 3 sposoby (Sprawdzamy zawartość wyfiltrowanej grupy komórek, niesłowników) 
+
+# 1. Odfiltrowanie i zliczenie komórek kolumny o innym typie danych, niż słownik.
+
+# 1a. pierwszy sposób: list comprehension + isinstance()
+sum(not isinstance(x, dict) for x in train['building'])
+
+# 1b. drugi sposób: filtr + map() + isinstance()
+filtr3 = train['building'].map(lambda x: not isinstance(x, dict)) #.apply/.map
+
+a = int()
+for x in train['building'][filtr3]:
+    a+=1
+a
+
+# 1c. trzeci sposób: list comprehension + type()
+b = int()
+b = sum(1 for x in train['building'] if type(x) != dict)
+b
+
+# 2. Drukowanie bez powtórzeń
+# Drukujemy (wyświetlamy) treść wyfiltrowanych komórek kolumny,
+# unikając przy tym powtórzeń w outpucie (np. 400 komórek jednej treści):
+
+2a. pierwszy sposób: jeśli x nie jest taki jak ostatni, to wydrukuj go i przypisz do zmiennej odp. za ostatni.
+
+count = int()
+prev_x = None
+for x in train['column_A'][filtr3]:
+    if x != prev_x:
+        print(x, type(x))
+        prev_x = x
+    count += 1
+print(count)
+
+2b. drugi sposób: "jeśli treść jest już w liście, pomiń, jeśli nie, wydrukuj"
+
+count = int()
+lista = list()
+for x in train['column_A'][filtr3]:
+    _ = x, type(x)
+    if _ in lista:
+        pass
+    else:
+        print(_)
+    lista.append(_)
+    count += 1
+print(count)
+
+#(2c. trzeci sposób: dodawanie każdego iterowanego elementu x do zbioru
+# i wydrukowanie zbioru po zakończeniu pętli - typ danych set() przechowuje tylko unikaty)
+
