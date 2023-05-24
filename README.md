@@ -1,4 +1,4 @@
-# wlasne-skrypty
+# wlasne-skrypty 
 ### dokumentacja mojej nauki Pythona
 
 Będę tu umieszczał skrypty, które wykonuję... często dla samego treningu.
