@@ -1,4 +1,4 @@
-# Most Frequent Words in an Article
+# Most Frequent Words in an Article 
 #### Funkcja w kolejności malejącej drukuje najczęściej (tj. co najmniej 5 razy) użyte słowa wraz z licznikiem ich wystąpień. Słowa poniżej 5 znaków zapisane wyłącznie małymi literami traktuje jako prawdopodbny zaimek lub przyimek. Jest niewiele krótkich słów, często są to skrótowce lub nazwy własne, w których występuje wielka litera.
 #### Skrypt może mieć zastosowanie w analizie dyskursu. Szczególnie przy dużych zbiorach tekstu. Analiza częstości słów pokazuje obiekty zainteresowania autora oraz charakteryzuje styl komunikatu. 
 #### Najważniejsze metody: dict(), filter(), sorted(). Operacje na pliku, słowniku i definiowanie funkcji pomocniczych.
