@@ -1,4 +1,4 @@
-## Extract Unique Options from Partly Overlapping
+## Extract Unique Options from Partly Overlapping 
 #### Skrypt wyodrębnia unikalne opcje, których nazwa częściowo się pokrywa: parking / parking strzeżony / parking, dodatkowo płatny.
 #### W tym skrypcie zastosowałem: pętlę for, podwójnie zagnieżdżoną instrukcję warunkową, wyszukiwanie słów kluczowych w łańcuchu tekstowym i liczenie znaków przez wskaźnik. Skrypt ma zastosowanie wewnętrzne, jest dostosowany do danych, na których pracowałem.
 #### Rozwiązana przeszkoda polegała na tym, że treść opcji była zapisana w sposób niejednolity, np. przecinek oddziela poszczególne opcje, ale występuje także w samej treści opcji, np. "parking strzeżony, dodatkowo płatny. Zwykłe podzielenie tekstu względem przecinka błędnie potraktowałoby "dodatkowo płatny" jako samodzielną opcję, zamiast potraktować to jako wydłużenie nazwy opcji, które czyni ją samą unikalną względem tych niezawierających dopisku. 
