@@ -1,42 +1,29 @@
-#### extract unique options which partly overlap, like: parking and parking strzeżony.
-# W tym skrypcie zastosowałem: pętlę for, podwójnie zagnieżdżoną instrukcję warunkową, wyszukiwanie słów kluczowych w łańcuchu tekstowym i liczenie znaków przez wskaźnik. Skrypt ma zastosowanie wewnętrzne, jest dostosowany do danych, na których pracowałem.
+## Extract Unique Options from Partly Overlapping
+#### Skrypt wyodrębnia unikalne opcje, których nazwa częściowo się pokrywa: parking / parking strzeżony / parking, dodatkowo płatny.
+#### W tym skrypcie zastosowałem: pętlę for, podwójnie zagnieżdżoną instrukcję warunkową, wyszukiwanie słów kluczowych w łańcuchu tekstowym i liczenie znaków przez wskaźnik. Skrypt ma zastosowanie wewnętrzne, jest dostosowany do danych, na których pracowałem.
+#### Rozwiązana przeszkoda polegała na tym, że treść opcji była zapisana w sposób niejednolity, np. przecinek oddziela poszczególne opcje, ale występuje także w samej treści opcji, np. "parking strzeżony, dodatkowo płatny. Zwykłe podzielenie tekstu względem przecinka błędnie potraktowałoby "dodatkowo płatny" jako samodzielną opcję, zamiast potraktować to jako wydłużenie nazwy opcji, które czyni ją samą unikalną względem tych niezawierających dopisku. 
 
-# Spis treści:
-# 1. Opis działania skryptu wraz z przykładem
-# 2. Kod skryptu operujący na zmiennej
-# 3. Input : zawartość zmiennej PRZED zastosowaniem skryptu 
-# 4. Output: zawartość zmiennej PO zastosowaniu skryptu
+#### Spis treści:
+1. Kod skryptu
+2. Wyjaśnienie działania skryptu na przykładzie
+3. Input : zawartość zmiennej PRZED zastosowaniem skryptu 
+4. Output: zawartość zmiennej PO zastosowaniu skryptu
 
-# 1. OPIS
-# Dane pochodzą z tabeli typu Dataframe dotyczącego nieruchomości mieszkalnych, z kolumny "opcje parkingu". 
-# Skrypt wyodrębnia unikalne opcje, których treść się częsciowo pokrywa - na tym polega trudność zadania.
-
-# Zilustruję to przykładem: dwie komórki zawierają tekst:
-# jedna: "garaż, parking strzeżony, płatny dodatkowo, parking podziemny"
-# druga: "parking strzeżony, parking garaż"
-# Nasz skrypt wyodrębnia następujące unikalne opcje parkingu:
-# garaż
-# parking strzeżony płatny dodatkowo*
-# parking podziemny
-# parking strzeżony*
-# parking*
-# *Zwróć uwagę, że opcje oznaczone gwiazdką pokrywają się częścią treści, a mimo to są odrębnymi opcjami. 
-
-# 2. KOD SKRYPTU
-#Wyciągam komórki kolumny "parking" do zmiennej; każda komórka będzie elementem zbioru.
-opcje_parkingu = set()
+### 1. KOD SKRYPTU
+Wyciągam komórki kolumny "parking" do zmiennej; każda komórka będzie elementem zbioru.
+```python opcje_parkingu = set()
 _ = train.parking.map(lambda x: opcje_parkingu.add(x) if pd.notna(x) else None)
-
-#Zamieniam zbiór na ciąg tekstowy i na listę pozbywając się przecinków, które znacznie komplikowałyby robotę.
-opcje_parkingu = str(opcje_parkingu)
+```
+Zamieniam zbiór na ciąg tekstowy i na listę pozbywając się przecinków, które znacznie komplikowałyby robotę.
+```python opcje_parkingu = str(opcje_parkingu)
 opcje_parkingu2 = list()
 for cell in opcje_parkingu.split(','):
     cell2 = re.sub('[^\w\s]','',cell)
     cell2 = cell2[1:] if cell2[0]==' ' else cell2
     opcje_parkingu2.append(cell2)
-
-#Skrypt parsuje ciąg tekstowy w poszukiwaniu słów kluczowych, które oznaczają początek i koniec nowej opcji parkingu (nowa opcja z tej kolumnie zawsze zaczyna się jednym z słów kluczowych, więc kiedy przeczyta kolejne słowo-klucz cofa się na jego początek i odcina poprzedni ciąg wysyłając go do zbioru unikalnych opcji parkingu.
-uniq_opcje_parkingu = set()
+```
+Skrypt parsuje ciąg tekstowy w poszukiwaniu słów kluczowych, które oznaczają początek i koniec nowej opcji parkingu (nowa opcja z tej kolumnie zawsze zaczyna się jednym z słów kluczowych, więc kiedy przeczyta kolejne słowo-klucz cofa się na jego początek i odcina poprzedni ciąg wysyłając go do zbioru unikalnych opcji parkingu.
+```python uniq_opcje_parkingu = set()
 kluczowe = ['brak', 'garaż', 'parking', 'miejsce']
 
 for idx, cell in enumerate(opcje_parkingu2):
@@ -51,10 +38,37 @@ for idx, cell in enumerate(opcje_parkingu2):
     else:
         pass
     uniq_opcjeparkingu.add(unikalna)
+    
 uniq_opcjeparkingu
+```
+### 2. WYJAŚNIENIE
 
-# 3. INPUT
-'''
+Dane pochodzą z tabeli typu Dataframe dotyczącego nieruchomości mieszkalnych, z kolumny "opcje parkingu". 
+Skrypt wyodrębnia unikalne opcje, których treść się częsciowo pokrywa - na tym polega trudność zadania.
+
+Zilustruję to przykładem: dwie komórki zawierają tekst:
+
+* jedna: "garaż, parking strzeżony, płatny dodatkowo, parking podziemny"
+
+* druga: "parking strzeżony, parking garaż"
+
+
+Nasz skrypt wyodrębnia następujące unikalne opcje parkingu:
+
+* garaż
+
+* parking strzeżony płatny dodatkowo*
+
+* parking podziemny*
+
+* parking strzeżony*
+
+* parking*
+
+*Zwróć uwagę, że opcje oznaczone gwiazdką pokrywają się częścią treści, a mimo to są odrębnymi opcjami. 
+
+### 3. INPUT
+```python
 opcje_parkingu
 {'brak',
  'garaż',
@@ -88,9 +102,9 @@ opcje_parkingu
  'parking strzeżony, brak',
  'parking strzeżony, parking podziemny',
  'płatny dodatkowo'}
-'''
-# 4. OUTPUT
-'''
+```
+### 4. OUTPUT
+```python
 uniq_opcjeparkingu
 {'brak',
  'brak płatny dodatkowo',
@@ -107,4 +121,4 @@ uniq_opcjeparkingu
  'parking podziemny płatny dodatkowoobowiązkowy',
  'parking strzeżony',
  'parking strzeżony płatny dodatkowo'}
-'''
+```
