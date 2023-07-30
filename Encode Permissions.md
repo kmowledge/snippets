@@ -6,7 +6,7 @@
 2. Tworzenie roli jako zlepku uprawnień z wartościami binarnymi
 3. Sprawdzenie czy dana rola* ma nadane określone uprawnienie
 
-*Wielu użytkowników może mieć nadaną tą samą rolę, z tym samym szeregiem uprawnień. 
+* Wielu użytkowników może mieć nadaną tą samą rolę, z tym samym szeregiem uprawnień. 
 
 ```golang
 package main
